@@ -15,3 +15,15 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+
+
+
+
+/*
+Important points to remember:
+  -> Here, React.StringMode means that whatever the changes are done in App.js will be seen as it is inside the index.html file.
+  -> 
+
+
+*/
