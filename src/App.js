@@ -2,26 +2,53 @@ import './App.css';
 import Navbar from './components/Navbar';
 import PropTypes from 'prop-types';
 import TextFrom from './components/TextFrom';
-// import About from './components/About';
-import React, {useState} from 'react';
+import About from './components/About';
+import React, { useState } from 'react';
+import Alert from './components/Alert';
+// Importing different function from react-router-dom package
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+
 
 
 
 
 
 function App() {
+  // This state is for dark mode
   const [mode, setMode] = useState('light');
+  // This is state is for alert message
+  const [alert, setAlert] = useState(null);
+
+  // This function is for alert message
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,    // Here, in this object we can see that we can also take the name of the key and name of the value same and can also take the name of key-value pair same
+      type: type
+    })
+
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500)
+  }
 
   const toggleMode = () => {
-    if(mode === 'light')
-    {
+    if (mode === 'light') {
       setMode('dark');
       document.body.style.backgroundColor = "grey";
+      showAlert("Dark Mode has been enabled", "success");
+
+      document.title = "TextUtils - Dark Mode";
     }
-    else
-    {
+    else {
       setMode('light');
       document.body.style.backgroundColor = "white";
+      showAlert("Light Mode has been enabled", "success");
+
+      document.title = "TextUtils - Light Mode";
     }
   }
   return (
@@ -36,13 +63,23 @@ function App() {
     //   <div className="container">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Recusandae est temporibus labore reiciendis natus quod, nihil eaque reprehenderit quisquam fuga nobis nemo veritatis, rerum sint? Perspiciatis a minima ipsa, facere porro eos nobis magni.</div>
     // </>
 
+
+
     <>
-      <Navbar title="TextUtils" aboutText="About TextUtils" mode={mode} toggleMode={toggleMode}/>
-      {/* <Navbar/> */}    {/* This is how we define a default component */}
-      <div className='container my-3'>
-        <TextFrom heading="Enter the text to analyze" mode={mode}/>
-        {/* <About/> */}
-      </div>
+      <Router>
+        <Navbar title="TextUtils" aboutText="About TextUtils" mode={mode} toggleMode={toggleMode} />
+        <Alert alert={alert} />
+        {/* <Navbar/> */}    {/* This is how we define a default component */}
+        <div className='container my-3'>
+          {/* <About/> */}
+          <Routes>
+            <Route exact path="/about" element={<About />}>
+            </Route>
+            <Route exact path="/" element={<TextFrom showAlert={showAlert} heading="Enter the text to analyze" mode={mode} />}>
+            </Route>
+          </Routes>
+        </div>
+      </Router>
     </>
   );
 }

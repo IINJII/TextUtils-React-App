@@ -1,7 +1,7 @@
 import React , {useState} from 'react';
 
 export default function TextFrom(props) {
-    const [text, setText] = useState('Enter text here');    // This is how we create states
+    const [text, setText] = useState('');    // This is how we create states
     console.log(text);
     // text = "New Text";    // This is the incorrect way of changing the value of text. This will thorw an error.
     // setText("My name is Nitish Jaiswal")    // Correct way of changing the value of text
@@ -9,13 +9,29 @@ export default function TextFrom(props) {
     const handleUpClick = () => {
         // console.log("Uppercase was clicked" + text);
         let newText = text.toUpperCase();
+
+        if(newText === "")
+        {
+            props.showAlert("Please enter text into the textarea", 'info');
+            return;
+        }
+
         setText(newText);
+        props.showAlert("Converted to Uppercase!", 'success');
+
     }
 
     const handleDownClick = () => {
         // console.log("Lowercase was clicked" + text);
         let newText = text.toLowerCase();
         setText(newText);
+        props.showAlert("Converted to Lowercase!", 'success');
+
+        if(newText === "")
+        {
+            props.showAlert("Please enter text into the textarea", 'info');
+            return;
+        }
     }
 
     const handleTitleClick = () => {
@@ -23,7 +39,7 @@ export default function TextFrom(props) {
         let wordsArray = text.split(" ");
         console.log(wordsArray);
         let sentence = "";
-
+        
         for(let element of wordsArray)
         {
             if(element.includes("\n"))
@@ -37,13 +53,23 @@ export default function TextFrom(props) {
             }
             sentence = sentence + element.substring(0, 1).toUpperCase() + element.substring(1, element.length).toLowerCase() + " ";
         }
+        
+        if(sentence === " ")
+        {
+            props.showAlert("Please enter text into the textarea", 'info');
+            return;
+        }
 
         setText(sentence);
+        props.showAlert("Converted to TitleCase!", 'success');
+        
     }
 
     const handleClearClick = () => {
         let clearText = "";
         setText(clearText);
+
+        props.showAlert("Cleared text!", 'warning');
     }
 
     const handleOnChange = (event) => {
@@ -69,7 +95,7 @@ export default function TextFrom(props) {
                 <p>{text.split(" ").length} words and {text.length} characters</p>
                 <p>{0.008 * text.split(" ").length} minutes to read</p>
                 <h2>Preview</h2>
-                <p>{text}</p>
+                <p>{text.length > 0 ? text : "Enter something in the textbox above to preview it here"}</p>
             </div>
         </>
     )
