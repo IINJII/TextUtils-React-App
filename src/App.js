@@ -35,20 +35,30 @@ function App() {
     }, 1500)
   }
 
-  const toggleMode = () => {
+
+  const bodyClassRemover = () => {
+    document.body.classList.remove('bg-primary', 'bg-danger', 'bg-warning', 'bg-success');
+  }
+
+
+
+  const toggleMode = (cls) => {
+    bodyClassRemover();
+    console.log(cls);
+    document.body.classList.add('bg-' + cls);
     if (mode === 'light') {
       setMode('dark');
       document.body.style.backgroundColor = "grey";
       showAlert("Dark Mode has been enabled", "success");
 
-      document.title = "TextUtils - Dark Mode";
+      // document.title = "TextUtils - Dark Mode";
     }
     else {
       setMode('light');
       document.body.style.backgroundColor = "white";
       showAlert("Light Mode has been enabled", "success");
 
-      document.title = "TextUtils - Light Mode";
+      // document.title = "TextUtils - Light Mode";
     }
   }
   return (
@@ -73,9 +83,10 @@ function App() {
         <div className='container my-3'>
           {/* <About/> */}
           <Routes>
-            <Route exact path="/about" element={<About />}>
+            <Route exact path="/about" element={<About  mode={mode}/>}>
             </Route>
             <Route exact path="/" element={<TextFrom showAlert={showAlert} heading="Enter the text to analyze" mode={mode} />}>
+              {/* <TextFrom showAlert={showAlert} heading="Enter the text to analyze" mode={mode} /> */}
             </Route>
           </Routes>
         </div>
